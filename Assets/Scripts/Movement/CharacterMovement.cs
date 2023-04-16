@@ -32,6 +32,7 @@ public class CharacterMovement : MonoBehaviour
     private float _verticalVelocity = -0.1f;
     private CharacterController _characterController;
     private CapsuleCollider _capsuleCollider;
+    private Animator _animator;
     private float _capsuleHeight;
     private Vector3 _capsuleCenter;
     private Vector3 _groundNormal = Vector3.up;
@@ -44,6 +45,8 @@ public class CharacterMovement : MonoBehaviour
         _capsuleCollider = GetComponent<CapsuleCollider>();
         _capsuleHeight = _capsuleCollider.height;
         _capsuleCenter = _capsuleCollider.center;
+
+        _animator = GetComponent<Animator>();
     }
 
     private void SetMoveDirection(bool isRight)
@@ -93,6 +96,7 @@ public class CharacterMovement : MonoBehaviour
             // set falling time
             _verticalVelocity -= (_gravity * Time.deltaTime);
         }
+        _animator.SetBool("IsGrounded", CheckGrounded());
     }
 
     private bool CheckGrounded()
@@ -130,6 +134,7 @@ public class CharacterMovement : MonoBehaviour
             _rollingElapsedTime = 0f;
             _isRolling = false;
         }
+        _animator.SetBool("IsRolling", _isRolling);
     }
 
     private void Update()
