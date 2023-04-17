@@ -1,0 +1,35 @@
+Root Transform Rotation
+用於設置Root Transform的旋轉方向。
+
+Bake into Pose：選中後，角色的方向會基於body transform（Pose）。 Root Orientation是一個常量，所以Animation Clip不會旋轉這個物體。
+
+只有AnimationClip的開始和結束位置旋轉相似的時候，才應該使用這個選項。可以通過右邊的綠燈判斷。通常用於向前直行的走或跑的動畫。
+
+Base Upon：可以設置動畫面向的地方。
+
+Body Orientation：動畫會面向身體正前方。這個設置適用於大多數身體朝前的動畫，比如走跑跳。但是如果動畫是向左或向右平移的話，會有問題。這時候可以使用下面的Offset來調節角色的面向。
+Original：有的動畫師會給動畫手動加上旋轉，確保動畫的面相是正確的，這時候可以使用這個選項，一般就不用再手動調整Offset了。
+Offset：基於Base Upon的設置，調整偏移。
+
+===============================================================================================================================================================================
+
+Root Transform Position (Y)
+用於設置Root Transform的Y軸位置。
+
+Bake into Pose：選中後，動畫的Y軸運動會保留在Body Transform（Pose）上。 Root Transform的Y軸會是一個常數，所以不會受動畫影響，以及動畫不會改變物體位置的Y值。右邊有一個綠燈指示動畫起始位置和結束位置的高度是否一致，可以看出動畫是否適合使用此選項。
+
+大多數的動畫應該選中此選項，除了那些會改變物體高度的動畫比如跳起、跳下這些動畫。
+
+Base Upon：除了Original 或 Mass Center (Body)選項外，還有一個Feet選項。 Feet選項非常適合改變物體高度的動畫（不勾選Bake Into Pose）。使用Feet時，Root Transform Position Y會匹配骨骼中腳部的Y位置（更低的那個）。 Feet選項可以避免混合或轉換時浮空的現象。
+
+Offset：可以設置高度的偏移量。
+
+===============================================================================================================================================================================
+
+Root Transform Position (XZ)
+用於設置Root Transform位置的XZ軸位置。
+
+Bake Into Pose：通常用於原地不動的動畫（動畫在XZ軸上的位置為0）。可以用來去除動畫循環累計的誤差，造成位置的移動。也可以通過設置Based Upon Original來強制使用動畫師設置的位置，否則會使角色的重心作為Root。
+
+Loop Pose
+Loop Pose 會基於Root Transform。 Root Transform在每幀被計算出來後，動畫的位置會相對Root Transform。開始幀和結束幀的差別會被計算出來，然後分佈到動畫的0-100%。
