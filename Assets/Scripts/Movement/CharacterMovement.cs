@@ -31,7 +31,6 @@ public class CharacterMovement : MonoBehaviour
     // private
     private float _verticalVelocity = -0.1f;
     private CharacterController _characterController;
-    private CapsuleCollider _capsuleCollider;
     private Animator _animator;
     private float _capsuleHeight;
     private Vector3 _capsuleCenter;
@@ -42,9 +41,8 @@ public class CharacterMovement : MonoBehaviour
     private void Start()
     {
         _characterController = GetComponent<CharacterController>();
-        _capsuleCollider = GetComponent<CapsuleCollider>();
-        _capsuleHeight = _capsuleCollider.height;
-        _capsuleCenter = _capsuleCollider.center;
+        _capsuleHeight = _characterController.height;
+        _capsuleCenter = _characterController.center;
 
         _animator = GetComponent<Animator>();
     }
@@ -121,16 +119,16 @@ public class CharacterMovement : MonoBehaviour
             if (!_isRolling && !CheckGrounded()) return;
             _rollingElapsedTime = 0f;
             _isRolling = true;
-            _capsuleCollider.height = _targetCapsuleHeight;
-            _capsuleCollider.center = _targetCapsuleCenter;
+            _characterController.height = _targetCapsuleHeight;
+            _characterController.center = _targetCapsuleCenter;
         }
         _rollingElapsedTime += Time.deltaTime;
 
         // reset all the value
         if (_rollingElapsedTime >= _rollingTime && _isRolling)
         {
-            _capsuleCollider.height = _capsuleHeight;
-            _capsuleCollider.center = _capsuleCenter;
+            _characterController.height = _capsuleHeight;
+            _characterController.center = _capsuleCenter;
             _rollingElapsedTime = 0f;
             _isRolling = false;
         }
