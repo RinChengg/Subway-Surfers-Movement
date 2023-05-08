@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
+    [Header("Reference")]
+    [SerializeField] private GameController _gameController;
+
     [Header("Movement")]
     [SerializeField] private float _speed = 5.0f;
     [SerializeField] private float _turnSpeed = 0.05f;
@@ -27,6 +30,11 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private float _groundCheckOffset = -0.5f;
     [SerializeField] private float _groundCheckDistance = 0.4f;
     [SerializeField] private LayerMask _groundMask;
+
+    [Header("SFX")]
+    [SerializeField] private AudioSource _swipeSFX;
+    [SerializeField] private AudioSource _jumpSFX;
+    [SerializeField] private AudioSource _rollSFX;
 
     // private
     private float _verticalVelocity = -0.1f;
@@ -87,7 +95,11 @@ public class CharacterMovement : MonoBehaviour
     {
         if (CheckGrounded())
         {
-            if (Input.GetKeyDown(KeyCode.Space)) _verticalVelocity = _jumpForce;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _jumpSFX.Play();
+                _verticalVelocity = _jumpForce;
+            }
         }
         else
         {
@@ -117,6 +129,7 @@ public class CharacterMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             if (!_isRolling && !CheckGrounded()) return;
+            _rollSFX.Play();
             _rollingElapsedTime = 0f;
             _isRolling = true;
             _characterController.height = _targetCapsuleHeight;
@@ -138,8 +151,19 @@ public class CharacterMovement : MonoBehaviour
     private void Update()
     {
         // set direction by MoveInput
-        if (Input.GetKeyDown(KeyCode.A)) SetMoveDirection(false);
-        if (Input.GetKeyDown(KeyCode.D)) SetMoveDirection(true);
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            _swipeSFX.Play();
+            SetMoveDirection(false);
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            _swipeSFX.Play();
+            SetMoveDirection(true);
+        }
+
+        if (_gameController.Timer <= 90f && _gameController.Timer >= 45f) _speed = 15f;
+        if (_gameController.Timer <= 44f) _speed = 20f;
 
         MoveTo();
         SetLookDirection();
